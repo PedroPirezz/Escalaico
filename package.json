@@ -1,0 +1,22 @@
+{
+  "name": "cuidadoso",
+  "version": "1.0.0",
+  "main": "Homepage.ejs",
+  "scripts": {
+    "start": "nodemon Server.js"
+  },
+  "author": "PedroPirezz",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.9",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "fetch": "^1.1.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.4.5",
+    "node-fetch": "^3.3.2",
+    "sequelize": "^6.32.1"
+  }
+}
