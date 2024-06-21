@@ -3,12 +3,12 @@ const connection = require('./Database')
 const Escalas = connection.define('escalas', {
   Culto: {
     type: Sequelize.STRING,
-    allownull: false
+    allownull: false 
 },
     DataCulto: {
         type: Sequelize.STRING,
         allownull: false
-    },
+    }, 
     Teclado: {
       type: Sequelize.STRING,
       allownull: false 
@@ -21,11 +21,15 @@ const Escalas = connection.define('escalas', {
         type: Sequelize.STRING,
         allownull: false
     }, 
-    Bateria: {
+    Bateria: {  
       type: Sequelize.STRING,
       allownull: false
   },
   Mesa: {
+    type: Sequelize.STRING,
+    allownull: false
+},
+  Mes: {
     type: Sequelize.STRING,
     allownull: false
 }

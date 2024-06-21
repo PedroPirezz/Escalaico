@@ -50,6 +50,7 @@ h6 {
   transition: all 0.4s;
 }
 
+
 .back-to-top i {
   font-size: 28px;
   color: #fff;
@@ -1216,4 +1217,84 @@ section {
 
 #footer .credits {
   font-size: 13px;
+}
+
+.for{
+  margin-left: 30%;
+  width: 50%;
+  
+  text-align: left;
+}
+@media only screen and (orientation: landscape) {
+.meusinstrumentos{
+  display: flex;
+  flex-direction: row;
+  
+
+}
+.duinstrumento{
+  margin-left: 48%;
+}
+.meusinstrumentos{
+  text-align: center;
+  border: #0563BB solid 3px;
+}
+.for{
+  margin-left: 42%;
+ 
+}
+}
+
+#Instrumentselect {
+  display: none;
+  text-align: center;
+
+  
+}
+.CabecaFoto
+{
+  width: 27vw;
+  position: absolute;
+  height: 6vh;
+}
+@media only screen and (orientation: portrait) {
+.duinstrumento{
+  margin-left: 25%;
+}
+
+.CabecaFoto{
+  width: 94%;
+  
+  
+}
+}
+.che{
+  text-align: left;
+  width: 15px;
+  margin-left: 5%;
+  background-color: green;
+}
+.FotoPerfil{
+  width: 100%;
+}
+.buttonconfig{
+  margin-top: 3%;
+  margin-left: 2%;
+  background: none;
+  border: none;
+  color: white;
+  opacity: 100%;
+}
+
+.buttonconfig:hover {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

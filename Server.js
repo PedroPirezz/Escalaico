@@ -3,9 +3,14 @@ const app = express();
 const Cadastros = require('./Database/Cadastro')
 const Disponibilidades = require('./Database/Disponibilidades')
 const Escalas = require('./Database/Escalas')
+const getNextWeekDates = require('./ServerModules/Functions/GetDate')
 const bodyParser = require('body-parser'); 
 const bcrypt = require("bcryptjs");
 const session = require('express-session');
+const multer = require('multer'); // Importando o Multer
+const { where } = require('sequelize');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 
 const sessionConfig = session({
@@ -41,36 +46,61 @@ app.get('/', (req, res) => {
   res.render('Home.ejs')
 })
 
+app.post('/AlterInstrument', (req, res) => {
+  
+const id = req.session.userId
+  let instrumentos = req.body.instrumentos 
+
+ 
+  if (typeof instrumentos === 'string') {
+    instrumentos = [instrumentos];
+} else if (!Array.isArray(instrumentos)) {
+    // Se instrumentos não for array (ou seja, nenhum checkbox marcado), inicializa como array vazio
+    instrumentos = [];
+}
+
+  // Inicializa os valores como 'Indisponivel'
+  const dados = {
+      Violao: 'Indisponivel',
+      Teclado: 'Indisponivel',
+      Baixo: 'Indisponivel',
+      Mesa: 'Indisponivel',
+      Bateria: 'Indisponivel'
+  };
+
+  // Atualiza os valores para 'Disponivel' se o checkbox correspondente for marcado
+  for (let i = 0; i < instrumentos.length; i++) {
+    dados[instrumentos[i]] = 'Disponivel';
+}
+
+  // Atualiza o perfil existente
+  Cadastros.update(dados, {
+      where: { id: id }
+  });
+  res.redirect('/ProfilePage/' + id)
+})
+
+
+app.get('/ProfilePage/:id', (req, res) => {
+  let id = req.params.id
+Cadastros.findOne({where: {Id: id}}).then(Perfil => {
+  
+  res.render('ProfilePage.ejs', { Perfil: Perfil })
+})
+
+})
+
 app.get('/Login', (req, res) => {
-  res.render('LoginPage.ejs')
+  res.render('LoginPage.ejs') 
 })
 
 app.get('/EnviarDisponibilidade', (req, res) => {
   // Calcula a data da proxima terça feira
-  const dataHoje = new Date();
-  const proximaTerca = new Date(dataHoje.getTime() + (2 - dataHoje.getDay() + 7) * 24 * 60 * 60 * 1000);
-  const diaProximaTerca = ('0' + proximaTerca.getDate()).slice(-2);
-  const mesProximaTerca = ('0' + (proximaTerca.getMonth() + 1)).slice(-2);
-  const anoProximaTerca = proximaTerca.getFullYear();
-  const dataProximaTerca = `${diaProximaTerca}/${mesProximaTerca}/${anoProximaTerca}`;
-  
+const dates = getNextWeekDates();
 
-
-  // Calcula a data da proxima quinta feira
-  const proximaQuinta = new Date(dataHoje.getTime() + (4 - dataHoje.getDay() + 7) * 24 * 60 * 60 * 1000);
-  const diaProximaQuinta = ('0' + proximaQuinta.getDate()).slice(-2);
-  const mesProximaQuinta = ('0' + (proximaQuinta.getMonth() + 1)).slice(-2);
-  const anoProximaQuinta = proximaQuinta.getFullYear();
-  const dataProximaQuinta = `${diaProximaQuinta}/${mesProximaQuinta}/${anoProximaQuinta}`;
-  
-
-  // Calcula a data do proximo domingo
-  const proximoDomingo = new Date(dataHoje.getTime() + (0 - dataHoje.getDay() + 7) * 24 * 60 * 60 * 1000);
-  const diaProximoDomingo = ('0' + proximoDomingo.getDate()).slice(-2);
-  const mesProximoDomingo = ('0' + (proximoDomingo.getMonth() + 1)).slice(-2);
-  const anoProximoDomingo = proximoDomingo.getFullYear();
-  const dataProximoDomingo = `${diaProximoDomingo}/${mesProximoDomingo}/${anoProximoDomingo}`;
-
+let dataProximaTerca = dates.nextTuesday
+let dataProximaQuinta = dates.nextThursday
+let dataProximoDomingo = dates.nextSunday
   res.render('SubmitAvailability.ejs', { dataProximaTerca, dataProximaQuinta, dataProximoDomingo });
   
 
@@ -83,6 +113,16 @@ app.get('/Logout', (req, res) => {
   res.redirect('/')
 })
 
+app.post('/ChangeProfilePhoto',  upload.single('imagem'), async(req, res) => {
+
+  const imagem = req.file.buffer; // Dados binários da imagem
+  const certo = imagem.toString('base64'); // Codificando a imagem
+  const IdPerfil = req.session.userId
+
+  Cadastros.update({ FotoPerfil: certo }, {where: {Id: IdPerfil}}).then(
+    res.redirect('/ProfilePage/' + IdPerfil)
+  )
+})
 
 app.post('/LoginAuthentication', (req, res) => {
 

@@ -268,4 +268,23 @@
    */
   new PureCounter();
 
-})()
+})() 
+
+function divft(){ 
+  let div = document.querySelector('div.divft')
+  
+
+
+  if (div.style.display === "none" || div.style.display === "") {
+    // Se estiver invisível, torna visível
+    div.style.display = "block";
+} else {
+    // Se estiver visível, torna invisível
+    div.style.display = "none";
+}
+
+
+
+
+
+}
