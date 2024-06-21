@@ -72,6 +72,7 @@
       <h2>Cultos</h2>
    
     </div>
+    <form action="/SummitAvailability" method="post">
         <div class="row">
 
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
@@ -86,8 +87,8 @@
               <h4><a href="">Culto de Libertação</a></h4>
               <p style="opacity: 0%;">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
               <div>
-                <h4><input type="radio" id="radioOption1" name="CultoLibertacao" value="Disponivel"> Disponível</h4>
-                <h4><input type="radio" id="radioOption2" name="CultoLibertacao" value="Indisponivel"> Indisponível</h4>
+                <h4><input type="radio" id="radioOption1" required name="CultoLibertacao" value="Disponivel"> Disponível</h4>
+                <h4><input type="radio" id="radioOption2" required  name="CultoLibertacao" value="Indisponivel"> Indisponível</h4>
               </div>
             </div>
           </div>
@@ -104,8 +105,8 @@
               <h4><a href="">Culto da Familia</a></h4>
               <p style="opacity: 0%;">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
               <div>
-                <h4><input type="radio" id="radioOption1" name="CultoFamilia" value="Disponivel"> Disponível</h4>
-                <h4><input type="radio" id="radioOption2" name="CultoFamilia" value="Indisponivel"> Indisponível</h4>
+                <h4><input type="radio" id="radioOption1" required name="CultoFamilia" value="Disponivel"> Disponível</h4>
+                <h4><input type="radio" id="radioOption2" required name="CultoFamilia" value="Indisponivel"> Indisponível</h4>
               </div>
             </div>
           </div>
@@ -122,8 +123,8 @@
               <h4><a href="">Culto de Adoração (Manhã)</a></h4>
               <p style="opacity: 0%;">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
               <div>
-                <h4><input type="radio" id="radioOption1" name="CultoAdoracaoManha" value="Disponivel"> Disponível</h4>
-                <h4><input type="radio" id="radioOption2" name="CultoAdoracaoManha" value="Indisponivel"> Indisponível</h4>
+                <h4><input type="radio" id="radioOption1" required name="CultoAdoracaoManha" value="Disponivel"> Disponível</h4>
+                <h4><input type="radio" id="radioOption2" required name="CultoAdoracaoManha" value="Indisponivel"> Indisponível</h4>
               </div>
             </div>
           </div>
@@ -140,8 +141,8 @@
               <h4><a href="">Culto de Adoração (Noite)</a></h4>
               <p style="opacity: 0%;">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
               <div>
-                <h4><input type="radio" id="radioOption1" name="CultoAdoracaoNoite" value="Disponivel"> Disponível</h4>
-                <h4><input type="radio" id="radioOption2" name="CultoAdoracaoNoite" value="Indisponivel"> Indisponível</h4>
+                <h4><input required type="radio" id="radioOption1" name="CultoAdoracaoNoite" value="Disponivel"> Disponível</h4>
+                <h4><input required type="radio" id="radioOption2" name="CultoAdoracaoNoite" value="Indisponivel"> Indisponível</h4>
               </div>
             </div>
           </div>
@@ -157,3 +158,8 @@
 
       </div>
     </section><!-- End Services Section -->
+    <div style="text-align: center;" class="container" data-aos="fade-up">
+    <input type="submit" class="btn btn-primary" value="Enviar Disponibilidades">
+   </div>
+   <br><br>
+  </form>

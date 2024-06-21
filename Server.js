@@ -80,6 +80,97 @@ const id = req.session.userId
   res.redirect('/ProfilePage/' + id)
 })
 
+app.post('/SummitAvailability', async (req, res) => {
+  const id = req.session.userId;
+  const nome = req.session.userName;
+  const data = new Date();
+  const mesAtual = ("0" + (data.getMonth() + 1)).slice(-2);
+
+  let CultoLibertacao = req.body.CultoLibertacao;
+  let CultoFamilia = req.body.CultoFamilia;
+  let CultoAdoracaoManha = req.body.CultoAdoracaoManha;
+  let CultoAdoracaoNoite = req.body.CultoAdoracaoNoite;
+  const Status = "Pendente";
+
+  try {
+    const perfil = await Cadastros.findOne({ where: { Id: id } });
+    
+    if (!perfil) {
+      return res.status(404).json({ mensagem: 'Perfil não encontrado' });
+    }
+
+    console.log('Perfil encontrado:', perfil);
+
+    const cultos = [
+      { nome: 'CultoLibertacao', valor: CultoLibertacao },
+      { nome: 'CultoFamilia', valor: CultoFamilia },
+      { nome: 'CultoAdoracaoManha', valor: CultoAdoracaoManha },
+      { nome: 'CultoAdoracaoNoite', valor: CultoAdoracaoNoite }
+    ];
+
+    const instrumentosAdicionados = [];
+
+    const adicionarInstrumentosNaLinha = (disponibilidades, cultoNome, instrumentos) => {
+      instrumentos.forEach((instrumento, index) => {
+        if (!disponibilidades[index]) {
+          disponibilidades[index] = {
+            IdCadastro: id,
+            Nome: nome,
+            Mes: mesAtual,
+            Status,
+          };
+        }
+        disponibilidades[index][cultoNome] = instrumento;
+      });
+    };
+
+    const instrumentosDisponiveisPorCulto = {};
+
+    // Função para verificar disponibilidade de instrumentos e adicionar na estrutura temporária
+    const verificarInstrumentosPorCulto = (cultoNome, cultoValor) => {
+      if (cultoValor === 'Disponivel') {
+        const instrumentos = [];
+        for (const instrumento in perfil.dataValues) {
+          if (perfil.dataValues[instrumento] === 'Disponivel') {
+            instrumentos.push(instrumento);
+          }
+        }
+        instrumentosDisponiveisPorCulto[cultoNome] = instrumentos;
+      }
+    };
+ 
+    // Verifica disponibilidade de instrumentos para cada culto
+    for (const culto of cultos) {
+      verificarInstrumentosPorCulto(culto.nome, culto.valor);
+    }
+
+    // Transforma a estrutura temporária em uma lista de disponibilidades para serem salvas
+    const disponibilidadesParaSalvar = [];
+    for (const culto of cultos) {
+      if (instrumentosDisponiveisPorCulto[culto.nome]) {
+        adicionarInstrumentosNaLinha(disponibilidadesParaSalvar, culto.nome, instrumentosDisponiveisPorCulto[culto.nome]);
+      }
+    }
+
+    // Salva as disponibilidades no banco de dados
+    for (const disponibilidade of disponibilidadesParaSalvar) {
+      const disponibilidadeSalva = await Disponibilidades.create(disponibilidade);
+      instrumentosAdicionados.push(disponibilidadeSalva);
+      console.log('Disponibilidade salva:', disponibilidadeSalva);
+    }
+
+    res.redirect('/EnviarDisponibilidade');
+  } catch (error) {
+    console.error('Erro ao salvar disponibilidade:', error);
+  }
+
+
+});
+
+
+
+
+
 
 app.get('/ProfilePage/:id', (req, res) => {
   let id = req.params.id

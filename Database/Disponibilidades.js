@@ -9,7 +9,7 @@ const Disponibilidades = connection.define('disponiblidades', {
         type: Sequelize.STRING,
         allownull: false
     },
-    Semana: {
+    Mes: {
       type: Sequelize.STRING,
       allownull: false
   },
@@ -21,7 +21,7 @@ const Disponibilidades = connection.define('disponiblidades', {
         type: Sequelize.STRING,
         allownull: false
     }, 
-    CultoAdoracaoManha: {
+    CultoAdoracaoManha: { 
       type: Sequelize.STRING,
       allownull: false
   },
@@ -29,7 +29,7 @@ const Disponibilidades = connection.define('disponiblidades', {
     type: Sequelize.STRING,
     allownull: false
 },
- Congregação: {
+ Status: {
   type: Sequelize.STRING,
   allownull: false
 },
