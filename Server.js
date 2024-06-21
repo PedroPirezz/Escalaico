@@ -97,13 +97,20 @@ app.get('/Login', (req, res) => {
 app.get('/EnviarDisponibilidade', (req, res) => {
   // Calcula a data da proxima terça feira
 const dates = getNextWeekDates();
+const idlogado = req.session.userId
 
+Cadastros.findOne({where: {Id: idlogado}}).then(Perfil => {
+ 
+// Obtendo o nome do mês atual 
+const data = new Date();
+const mesAtual = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format(data);
+  
 let dataProximaTerca = dates.nextTuesday
 let dataProximaQuinta = dates.nextThursday
 let dataProximoDomingo = dates.nextSunday
-  res.render('SubmitAvailability.ejs', { dataProximaTerca, dataProximaQuinta, dataProximoDomingo });
+  res.render('SubmitAvailability.ejs', { dataProximaTerca, dataProximaQuinta, dataProximoDomingo, mesAtual, Perfil });
   
-
+})
 })
 
 app.get('/Logout', (req, res) => {
